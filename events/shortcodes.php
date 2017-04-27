@@ -23,14 +23,16 @@ function shortcode_mpevents_list($atts, $content) {
 
 //[mpevents-posters]
 function shortcode_mpevents_posters($atts) {
-  $display = "";
+  $display = "<div class='mpevents__posters' data-event-posters>";
   $events = mpevents_get_events_array();
 
   foreach($events as $event) {
-    $display = "<div>";
+    $display .= "<div>";
     $display .= mpevents_presenter_event_poster($event->ID);
     $display .= "</div>";
   }
+
+  $display .= "</div>";
 
   return $display;
 }
@@ -39,6 +41,12 @@ function shortcode_mpevents_posters($atts) {
 function shortcode_mpevents_event_title() {
   return get_the_title();
 }
+
+//[mpevent-description]
+function shortcode_mpevents_event_description() {
+  return get_field('mpevents_event_description');
+}
+
 
 //[mpevent-content]
 function shortcode_mpevents_event_content() {
@@ -66,6 +74,7 @@ function initialise_mpevents_shortcodes() {
   add_shortcode('mpevent-poster', 'shortcode_mpevents_event_poster');
   add_shortcode('mpevent-title', 'shortcode_mpevents_event_title');
   add_shortcode('mpevent-content', 'shortcode_mpevents_event_content');
+  add_shortcode('mpevent-description', 'shortcode_mpevents_event_description');
   add_shortcode('mpevent-date', 'shortcode_mpevents_event_date');
   add_shortcode('mpevent-time', 'shortcode_mpevents_event_time');
 }

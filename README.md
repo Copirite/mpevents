@@ -37,6 +37,8 @@ There are shortcodes available via this plugin that can be used in the theme.
 ##### Display the title of an event in a `[mpevents-list]` loop
 `[mpevent-title]` 
 
+##### Display the description of an event in a `[mpevents-list]` loop
+`[mpevent-description]` 
 
 ##### Display the poster of an event in a `[mpevents-list]` loop
 `[mpevent-poster]` 

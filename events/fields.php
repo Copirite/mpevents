@@ -62,6 +62,48 @@ function register_events_fields() {
       'active' => 1,
       'description' => '',
     ));
+    acf_add_local_field_group(array (
+      'key' => 'group_57e347c4e2789',
+      'title' => 'Event Fields',
+      'fields' => array (
+        array (
+          'key' => 'field_58afbbe0e5620',
+          'label' => 'Description',
+          'name' => 'mpevents_event_description',
+          'type' => 'textarea',
+          'instructions' => '',
+          'required' => 0,
+          'conditional_logic' => 0,
+          'wrapper' => array (
+            'width' => '',
+            'class' => '',
+            'id' => '',
+          ),
+          'default_value' => '',
+          'placeholder' => '',
+          'maxlength' => '',
+          'rows' => '',
+          'formatting' => 'none',
+        ),
+      ),
+      'location' => array (
+        array (
+          array (
+            'param' => 'post_type',
+            'operator' => '==',
+            'value' => 'events',
+          ),
+        )
+      ),
+      'menu_order' => 0,
+      'position' => 'normal',
+      'style' => 'default',
+      'label_placement' => 'top',
+      'instruction_placement' => 'label',
+      'hide_on_screen' => '',
+      'active' => 1,
+      'description' => '',
+    ));
   }
 }
 add_action('init', 'register_events_fields');

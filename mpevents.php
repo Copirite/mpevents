@@ -38,12 +38,20 @@ class MPEvents {
   }
 }
 
-// Start up this plugin
-add_action('init', 'MPEvents');
-
 function MPEvents() {
   global $MPEvents;
   $MPEvents = new MPEvents();
 }
+
+function mpevents_enqueue_scripts() {
+  wp_enqueue_style('slick-css', plugin_dir_url( __FILE__ ) . "vendor/css/slick.css", array(), '');
+  wp_enqueue_script('slick-js', plugin_dir_url( __FILE__ ) . 'vendor/js/slick.js', array( 'jquery' ), '', true );
+  wp_enqueue_script('mpevents-js', plugin_dir_url( __FILE__ ) . 'assets/js/mpevents.js', array( 'jquery' ), '', true );
+  wp_enqueue_style('fontawesome-css', 'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css', array(), '', 'all');
+}
+
+// Start up this plugin
+add_action('init', 'MPEvents');
+add_action('wp_enqueue_scripts', 'mpevents_enqueue_scripts', 11);
 
 ?>
