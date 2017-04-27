@@ -47,7 +47,10 @@ There are shortcodes available via this plugin that can be used in the theme.
 `[mpevent-content]` 
 
 ##### Display the date of an event in a `[mpevents-list]` loop
-`[mpevent-date]` 
+`[mpevent-date format="%d-%m-%Y"]` 
+
+This shortcode allows for a custom format (optional). There is a default which returns "28th Aug 2017". 
+To change the format, use the format codes listed (here)[http://php.net/manual/en/function.strftime.php]
 
 ##### Display the time of an event in a `[mpevents-list]` loop
 `[mpevent-time]` 

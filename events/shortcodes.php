@@ -58,9 +58,17 @@ function shortcode_mpevents_event_poster() {
   return mpevents_presenter_event_poster(get_the_ID());
 }
 
-//[mpevent-date]
-function shortcode_mpevents_event_date() {
-  return get_field('mpevents_event_date');
+//[mpevent-date format='%d-%m-%Y']
+function shortcode_mpevents_event_date($atts) {
+  $args = shortcode_atts(array('format' => false), $atts);
+  $date = get_field('mpevents_event_date');
+
+  if($args['format']) {
+    $date = strtotime($date);
+    $date = strftime($args['format'], $date);
+  }
+
+  return $date;
 }
 
 //[mpevent-time]
