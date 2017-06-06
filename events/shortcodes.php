@@ -16,7 +16,7 @@ function shortcode_mpevents_list($atts, $content) {
       $display .= do_shortcode($content);
     }
   } else {
-    $display .= "<h5>No Events scheduled this Month</h5>";
+    $display .= "<h5>No events scheduled this month</h5>";
   }
 
   $display .= "";
