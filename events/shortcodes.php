@@ -4,16 +4,19 @@
 //   $atts
 // );
 
-//[mpevents-list][/mpevents-list]
+//[mpevents-list month='08'][/mpevents-list]
 function shortcode_mpevents_list($atts, $content) {
+  $args = shortcode_atts(array('month' => date('m')), $atts);
   $display = "";
-  $events = mpevents_get_events_query();
+  $events = mpevents_get_events_query($args['month']);
 
   if($events->have_posts()) {
     while($events->have_posts()) {
       $events->the_post();
       $display .= do_shortcode($content);
     }
+  } else {
+    $display .= "<h5>No Events scheduled this Month</h5>";
   }
 
   $display .= "";
