@@ -1,11 +1,21 @@
 <?php /* (http://codex.wordpress.org/Function_Reference/register_post_type) */
 function mpevents_get_events_array() {
+  $date = date('Y-m-d');
+
   $args = array(
     'post_type' => 'events',
     'post_status' => 'publish',
     'posts_per_page' => -1,
     'orderby' => 'meta_value_num',
     'meta_key' => 'mpevents_event_date',
+    'meta_query' => array(
+        array(
+            'key' => 'mpevents_event_date',
+            'value' => $date,
+            'compare' => '>=',
+            'type' => 'DATE'
+        )
+    ),
     'order' => 'ASC'
   );
   $my_query = null;
