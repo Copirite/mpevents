@@ -27,9 +27,8 @@ function mpevents_get_events_array() {
   return [];
 }
 
-function mpevents_get_events_query($month) {
-
-  $current_month = date('Y-m-d', strtotime(date('Y') . '-' . $month . '-' . '01'));
+function mpevents_get_events_query($month, $year) {
+  $current_month = date('Y-m-d', strtotime($year . '-' . $month . '-' . '01'));
   $next_month = date('Y-m-d', strtotime('+1 month', strtotime($current_month)));
 
   $args = array(
