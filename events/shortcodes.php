@@ -6,9 +6,12 @@
 
 //[mpevents-list month='08'][/mpevents-list]
 function shortcode_mpevents_list($atts, $content) {
-  $args = shortcode_atts(array('month' => date('m')), $atts);
+  $args = shortcode_atts(array(
+    'month' => date('m'),
+    'year' => date('y')
+  ), $atts);
   $display = "";
-  $events = mpevents_get_events_query($args['month']);
+  $events = mpevents_get_events_query($args['month'], $args['year']);
 
   if($events->have_posts()) {
     while($events->have_posts()) {
