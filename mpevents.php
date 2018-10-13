@@ -4,7 +4,7 @@
 
 Plugin Name:  MPEvents
 Description:  Adds an Events post type.
-Version:      0.0.9
+Version:      0.1.0
 Author:       Matt Patterson
 Author URI:   http://mattpatterson.xyz
 Text Domain:  mp-events
