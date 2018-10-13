@@ -6,16 +6,23 @@
 
 //[mpevents-list month='08'][/mpevents-list]
 function shortcode_mpevents_list($atts, $content) {
+  global $post;
   $args = shortcode_atts(array(
     'month' => date('m'),
     'year' => date('y')
   ), $atts);
   $display = "";
-  $events = mpevents_get_events_query($args['month'], $args['year']);
+  $current_events = mpevents_get_events_query($args['month'], $args['year']);
+  $recurring_events = mpevents_get_recurring_events_query();
 
-  if($events->have_posts()) {
-    while($events->have_posts()) {
-      $events->the_post();
+  $events = join_events($current_events, $recurring_events, $args['month'], $args['year']);
+
+  if(count($events)) {
+    foreach($events as $event) {
+      $post = $event["event"];
+
+      set_query_var('day', $event['day']);
+
       $display .= do_shortcode($content);
     }
   } else {
@@ -67,14 +74,20 @@ function shortcode_mpevents_event_poster() {
 //[mpevent-date format='%d-%m-%Y']
 function shortcode_mpevents_event_date($atts) {
   $args = shortcode_atts(array('format' => false), $atts);
-  $date = get_field('mpevents_event_date');
+  $date = new DateTime(get_field('mpevents_event_date'));
 
-  if($args['format']) {
-    $date = strtotime($date);
-    $date = strftime($args['format'], $date);
+  if(get_query_var('day')) {
+    $day = get_query_var('day');
+    $date->setDate($date->format('Y'), $date->format('m'), $day);
   }
 
-  return $date;
+  if($args['format']) {
+    $format = $args['format'];
+  } else {
+    $format = "d F Y";
+  }
+
+  return $date->format($format);
 }
 
 //[mpevent-time]
@@ -91,6 +104,95 @@ function initialise_mpevents_shortcodes() {
   add_shortcode('mpevent-description', 'shortcode_mpevents_event_description');
   add_shortcode('mpevent-date', 'shortcode_mpevents_event_date');
   add_shortcode('mpevent-time', 'shortcode_mpevents_event_time');
+}
+
+function join_events($current, $recurring, $month, $year) {
+  $joined_events = [];
+
+  $d = new DateTime("1-$month-$year");
+  $days_in_month = $d->format('t');
+
+  for($i = 1; $i <= $days_in_month; $i++) {
+    $current_date = new DateTime("$year-$month-$i");
+
+    foreach($current as $event) {
+      $date =  new DateTime(get_field('mpevents_event_date', $event));
+
+      if($date > $current_date) break;
+
+      $day = intval($date->format('d'));
+      $current_day = intval($current_date->format('d'));
+
+
+      if($day == $current_day) {
+        array_push($joined_events, array('day' => $i, 'event' => $event));
+      }
+    }
+
+    foreach($recurring as $event) {
+      $occurrence = get_field('mpevents_recurring_occurrence', $event);
+
+      switch($occurrence) {
+        case 'daily':
+          array_push($joined_events, array('day' => $i, 'event' => $event));
+          break;
+        case 'weekly':
+          $date =  new DateTime(get_field('mpevents_event_date', $event));
+
+          if($date > $current_date) break; // recurring event hasn't started yet
+
+          $day = intval($date->format('d'));
+
+          if((($i - $day) % 7) == 0) {
+            array_push($joined_events, array('day' => $i, 'event' => $event));
+          }
+
+          break;
+        case 'fortnightly':
+          $date =  new DateTime(get_field('mpevents_event_date', $event));
+
+          if($date > $current_date) break; // recurring event hasn't started yet
+
+          $day = intval($date->format('d'));
+
+          if((($i - $day) % 14) == 0) {
+            array_push($joined_events, array('day' => $i, 'event' => $event));
+          }
+
+          break;
+        case 'monthly':
+          $date =  new DateTime(get_field('mpevents_event_date', $event));
+
+          if($date > $current_date) break; // recurring event hasn't started yet
+
+          $day = intval($date->format('d'));
+          $current_day = intval($current_date->format('d'));
+
+          if($day == $current_day) {
+            array_push($joined_events, array('day' => $i, 'event' => $event));
+          }
+
+          break;
+        case 'yearly':
+          $date =  new DateTime(get_field('mpevents_event_date', $event));
+
+          if($date > $current_date) break; // recurring event hasn't started yet
+
+          $day_month = $date->format('d-M');
+          $current_day_month = $current_date->format('d-M');
+
+          if($day_month == $current_day_month) {
+            array_push($joined_events, array('day' => $i, 'event' => $event));
+          }
+
+          break;
+      }
+    }
+  }
+
+
+
+  return $joined_events;
 }
 
 add_action('init', 'initialise_mpevents_shortcodes');

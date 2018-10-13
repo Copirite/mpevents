@@ -25,6 +25,60 @@ function register_events_fields() {
           'first_day' => 1,
         ),
         array (
+          'key' => 'field_58d0738c31515',
+          'label' => 'Reccuring Event?',
+          'name' => 'mpevents_recurring',
+          'type' => 'true_false',
+          'instructions' => '',
+          'required' => 0,
+          'conditional_logic' => 0,
+          'wrapper' => array (
+            'width' => '',
+            'class' => '',
+            'id' => '',
+          ),
+          'message' => '',
+          'default_value' => 0,
+        ),
+        array (
+          'key' => 'field_58d072f331512',
+          'label' => 'Occurrence',
+          'name' => 'mpevents_recurring_occurrence',
+          'type' => 'select',
+          'instructions' => '',
+          'required' => 1,
+          'conditional_logic' => array (
+            array (
+              array (
+                'field' => 'field_58d0738c31515',
+                'operator' => '==',
+                'value' => 1,
+              ),
+            ),
+          ),
+          'wrapper' => array (
+            'width' => '',
+            'class' => '',
+            'id' => '',
+          ),
+          'choices' => array (
+            'daily' => 'Daily',
+            'weekly' => 'Weekly',
+            'fortnightly' => 'Fortnightly',
+            'monthly' => 'Monthly',
+            'yearly' => 'Yearly',
+          ),
+          'default_value' => array (
+            'weekly'
+          ),
+          'allow_null' => 0,
+          'multiple' => 0,
+          'ui' => 0,
+          'ajax' => 0,
+          'return_format' => 'value',
+          'placeholder' => '',
+        ),
+        array (
           'key' => 'field_58b518b1bd019',
           'label' => 'Time',
           'name' => 'mpevents_event_time',
