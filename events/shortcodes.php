@@ -63,7 +63,7 @@ function shortcode_mpevents_event_description() {
 
 //[mpevent-content]
 function shortcode_mpevents_event_content() {
-  return get_the_content();
+  return get_post_field('post_content', get_the_ID());
 }
 
 //[mpevent-poster]

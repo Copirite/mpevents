@@ -60,8 +60,7 @@ function mpevents_get_events_query($month, $year) {
             ),
             array(
               'key' => 'mpevents_recurring',
-              'value' => null,
-              'compare' => '='
+              'compare' => 'NOT EXISTS'
             )
         )
     ),
